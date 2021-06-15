@@ -3,12 +3,15 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                echo "build"
+                sh 'composer install'
+                sh 'cp .env.example .env'
+                sh 'php artisan key:generate'
+                sh 'php artisan storage:link'
             }
         }
         stage('Test') { 
             steps {
-                echo "test"
+                sh './vendor/bin/phpunit'
             }
         }
         stage('Deploy') { 
